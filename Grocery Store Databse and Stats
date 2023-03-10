@@ -1,0 +1,28 @@
+--this creates an inventory table for a grocery store--
+CREATE TABLE inventory (id INTEGER PRIMARY KEY, item TEXT, price REAL, units INTEGER, aisle INTEGER);
+
+--this adds items to the inventory table including their id, price, units in stock, and which aisle they are located in--
+INSERT INTO inventory VALUES (1, "Apples", 0.98, 54, 1);
+INSERT INTO inventory VALUES (2, "Broccoli", 1.76, 15, 1);
+INSERT INTO inventory VALUES (3, "Oranges", 0.56, 45, 1);
+INSERT INTO inventory VALUES (4, "Lettuce", 2.87, 11, 1);
+INSERT INTO inventory VALUES (5, "Bread", 3.98, 24, 2);
+INSERT INTO inventory VALUES (6, "Peanut Butter", 4.56, 36, 2);
+INSERT INTO inventory VALUES (7, "Grape Jelly",3.77, 34, 2);
+INSERT INTO inventory VALUES (8, "Ground Beef", 7.84, 12, 3);
+INSERT INTO inventory VALUES (9, "Chicken Breast", 6.51, 10, 3);
+INSERT INTO inventory VALUES (10, "Milk", 2.38, 26, 4);
+INSERT INTO inventory VALUES (11, "Eggs", 15.95, 8, 4);
+INSERT INTO inventory VALUES (12, "Cheese", 4.16, 41, 4);
+INSERT INTO inventory VALUES (13, "Frozen Vegetables", 5.87, 31, 5);
+INSERT INTO inventory VALUES (14, "Ice Cream", 4.25, 20, 5);
+INSERT INTO inventory VALUES (15, "TV Dinners", 5.51, 15, 5);
+
+--this selects all of the items from the table and displays their associated values--
+SELECT * FROM inventory;
+
+--this orders the list of items by price (low to high)--
+SELECT * FROM inventory ORDER BY price;
+
+--this shows the total sales if every item was sold for its list price--
+SELECT ROUND(SUM(units*price),2) AS sales_available FROM inventory;
