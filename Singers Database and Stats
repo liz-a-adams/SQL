@@ -1,0 +1,84 @@
+--Creates the artists table--
+CREATE TABLE artists (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, group_name TEXT, group_status TEXT, birthplace TEXT, start_year INTEGER);
+
+--Add values to the artists table--
+INSERT INTO artists (name, group_name, group_status, birthplace, start_year) VALUES ("Harry Styles", "One Direction", "Inactive", "Reditch, England", 2010);
+INSERT INTO artists (name, group_name, group_status, birthplace, start_year) VALUES ("Niall Horan", "One Direction", "Inactive", "Mullingar, Westmeath, Ireland", 2010);
+INSERT INTO artists (name, group_name, group_status, birthplace, start_year) VALUES ("Louis Tomlinson", "One Direction", "Inactive", "Doncaster, South Yorkshire, England", 2010);
+INSERT INTO artists (name, group_name, group_status, birthplace, start_year) VALUES ("Liam Payne", "One Direction", "Inactive", "Wolverhampton, England", 2010);
+INSERT INTO artists (name, group_name, group_status, birthplace, start_year) VALUES ("Zayn Malik", "One Direction", "Inactive", "Bradford, West Yorkshire, England", 2010);
+INSERT INTO artists (name, birthplace, start_year) VALUES ("Taylor Swift", "West Reading, PA, USA", 2004);
+INSERT INTO artists (name, birthplace, start_year) VALUES ("Ed Sheeran", "Halifax, West Yorkshire, England", 2004);
+INSERT INTO artists (name, birthplace, start_year) VALUES ("Dolly Parton", "Pittman Center, TN, USA", 1956);
+
+--Creates the albums table--
+CREATE TABLE albums (id INTEGER PRIMARY KEY AUTOINCREMENT, album_name TEXT, artist_id INTEGER, release_year INTEGER);
+
+--Adds values to the albums table--
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("+", 7, 2011);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("Hello, I'm Dolly", 8, 1967);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("Just Between You and Me", 8, 1968);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("Just Because I'm a Woman", 8, 1968);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("Just the Two of US", 8, 1968);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("In the Good Old Days (When Times Were Bad)", 8, 1969);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("Always, Always", 8, 1969);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("My Blue Ridge Mountain Boy", 8, 1969);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("The Fairest of Them All", 8, 1970);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("Harry Styles", 1, 2017);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("Fine Line", 1, 2019);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("Harry's House", 1, 2022);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("Flicker", 2, 2017);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("Heartbreak Weather", 2, 2020);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("Walls", 3, 2020);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("Mind of Mine", 5, 2016);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("Taylor Swift", 6, 2006);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("Fearless", 6, 2008);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("Speak Now", 6, 2010);
+INSERT INTO albums (album_name, artist_id, release_year) VALUES ("Red", 6, 2012);
+
+--Creates the songs table--
+CREATE TABLE songs (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, album_id INTEGER, length INTEGER);
+
+--Adds values to the songs table--
+INSERT INTO songs (title, album_id, length) VALUES ("Tim McGraw", 17, 234);
+INSERT INTO songs (title, album_id, length) VALUES ("Our Song", 17, 204);
+INSERT INTO songs (title, album_id, length) VALUES ("Fifteen", 18, 294);
+INSERT INTO songs (title, album_id, length) VALUES ("As it Was", 12, 167);
+INSERT INTO songs (title, album_id, length) VALUES ("Matilda", 12, 245);
+INSERT INTO songs (title, album_id, length) VALUES ("Golden", 11, 208);
+INSERT INTO songs (title, album_id, length) VALUES ("Sign of the Times", 10, 340);
+INSERT INTO songs (title, album_id, length) VALUES ("Slow Hands", 13, 187);
+
+--The artist, album name, and title for all of the songs available in the song table from oldest to newest--
+SELECT 
+    a.name,
+    al.album_name,
+    s.title
+FROM
+    artists AS a
+    JOIN albums AS al
+    ON al.artist_id = a.id
+    JOIN songs AS s
+    ON s.album_id = al.id
+ORDER BY al.release_year;
+
+--Number of albums each artist has ordered by most to least--
+SELECT 
+    a.name,
+    COUNT(al.id) AS number_of_albums
+FROM
+    artists AS a
+    LEFT OUTER JOIN albums AS al
+    ON al.artist_id = a.id
+GROUP BY a.name
+ORDER BY number_of_albums DESC;
+
+--Which albums have the longest songs (over 4 minutes/240 seconds)?--
+SELECT
+    al.album_name,
+    s.title AS song_title
+FROM albums AS al
+    JOIN songs AS s
+    ON s.album_id = al.id
+WHERE s.length > 240
+ORDER BY s.length;
