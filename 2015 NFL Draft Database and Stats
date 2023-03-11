@@ -3,6 +3,8 @@
 Collected by: https://www.khanacademy.org/profile/BobbyandKaren/
 */
 
+--Create Database--
+
 CREATE TABLE picks(
 	id INTEGER PRIMARY KEY,
 	pick_number INTEGER,
@@ -209,9 +211,11 @@ INSERT INTO picks (pick_number, name, college, picked_by, position)
 	VALUES(98,"Steven Nelson","Oregon State","Kansas City","CB");
 INSERT INTO picks (pick_number, name, college, picked_by, position)
 	VALUES(99,"Paul Dawson","TCU","Cincinnati","OLB");
-	
+
+--Select all values from database--	
 SELECT * FROM picks;
 
+--This code shows each college's top and bottom pick numbers--
 SELECT 
     college,
     MIN(pick_number) AS top_pick,
@@ -219,6 +223,7 @@ SELECT
 FROM picks
 GROUP BY college;
 
+--This code shows the total number of picks each college took in the draft--
 SELECT
     college,
     COUNT(name) AS number_of_players
@@ -226,16 +231,18 @@ FROM picks
 GROUP BY college
 HAVING number_of_players BETWEEN 2 AND 4;
 
+--This code shows whether each player is a member of the offesive or defensive lines--
 SELECT
     name,
     college,
     CASE
-        WHEN position IN ("QB", "C", "WR", "OG", "OT", "TE") THEN           "Offensive"
+        WHEN position IN ("QB", "C", "WR", "OG", "OT", "TE") THEN "Offensive"
         ELSE "Defensive"
         END "line"
 FROM picks
 ORDER BY line;
 
+--This code shows the number of player who were drafter who were either a Quarterback or an Offesive Tackle--
 SELECT
     position,
     COUNT(position) AS players_drafted
@@ -243,6 +250,7 @@ FROM picks
 WHERE position = "QB" OR position = "OT"
 GROUP BY position;
 
+--This code shows the players, their positions, and the pick numbers who attended a college in Michigan and were selected in the top half of the draft--
 SELECT
     name,
     position,
