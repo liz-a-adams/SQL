@@ -242,7 +242,7 @@ SELECT
 FROM picks
 ORDER BY line;
 
---This code shows the number of player who were drafter who were either a Quarterback or an Offesive Tackle--
+--This code shows the number of player who were drafted who were either a Quarterback or an Offesive Tackle--
 SELECT
     position,
     COUNT(position) AS players_drafted
