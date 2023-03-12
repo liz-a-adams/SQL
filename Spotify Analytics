@@ -33,25 +33,6 @@ GROUP BY artist_name
 HAVING number_of_songs > 1
 ORDER BY number_of_songs DESC;
 
---Calculate the average popularity for the artists in the Spotify data table. Then, for every artist with an average popularity of 90 or above, show their name, their average popularity, and label them as a “Top Star”.
-WITH average_popularity_CTE AS (
-                    SELECT
-                        artist_name,
-                        AVG(popularity) AS average_popularity
-                    FROM Spotifydata
-                    GROUP BY artist_name
-                  )
-SELECT
-    artist_name,
-    average_popularity,
-    CASE
-        WHEN average_popularity >= 90 THEN "Top Star"
-        ELSE ""
-        END star_potential
-FROM average_popularity_CTE
-WHERE average_popularity >= 90
-ORDER BY average_popularity DESC;
-
 --What artist released the longest song?
 SELECT
     artist_name,
@@ -76,3 +57,22 @@ WHERE popularity IN (SELECT
                       FROM Spotifydata
                       ORDER BY popularity                      
                       LIMIT 10);
+
+--Calculate the average popularity for the artists in the Spotify data table. Then, for every artist with an average popularity of 90 or above, show their name, their average popularity, and label them as a “Top Star”.
+WITH average_popularity_CTE AS (
+                    SELECT
+                        artist_name,
+                        AVG(popularity) AS average_popularity
+                    FROM Spotifydata
+                    GROUP BY artist_name
+                  )
+SELECT
+    artist_name,
+    average_popularity,
+    CASE
+        WHEN average_popularity >= 90 THEN "Top Star"
+        ELSE ""
+        END star_potential
+FROM average_popularity_CTE
+WHERE average_popularity >= 90
+ORDER BY average_popularity DESC;
