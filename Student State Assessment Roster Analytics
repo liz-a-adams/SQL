@@ -59,7 +59,7 @@ SELECT
 		ELSE Accommodation.Grade_Level 
 		END AS GradeLevel,
 	COUNT(Accommodation.lastfirst) AS TotalStudents,
-	(COUNT(Accommodation.lastfirst)-COUNT(extratime.Accom_ExtraTime)-COUNT(texttospeech.Accom_TexttoSpeech)-COUNT(testbloodsugar.Accom_TestBloodSugar)-(COUNT(CASE WHEN smallgroup.Accom_SmallGroup < 15 THEN 1 END))) AS StandardStudents,
+	(COUNT(Accommodation.lastfirst)-COUNT(extratime.Accom_ExtraTime)-COUNT(texttospeech.Accom_TexttoSpeech)-COUNT(testbloodsugar.Accom_TestBloodSugar)-(COUNT(CASE WHEN Accommodation.lastfirst > 15 THEN smallgroup.Accom_SmallGroup END))) AS StandardStudents,
 	COUNT(extratime.Accom_ExtraTime) AS ExtraTime,
 	CASE
 		WHEN COUNT(Accommodation.lastfirst) > 15 THEN COUNT(smallgroup.Accom_SmallGroup)
