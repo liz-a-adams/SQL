@@ -1,0 +1,81 @@
+--A table was created via CSV import showing students with their accommodations and test regions for state assessments. 
+--The following SQL was created in order to figure out the numbeer of testing rooms and students testing in each region based on student accommodations.
+
+WITH extratime AS (
+					SELECT 
+						Accommodation.student_number,
+						Accommodation.lastfirst,
+						Accommodation.test_region,
+						Accommodation.Accom_ExtraTime
+					FROM Accommodation
+					WHERE Accommodation.Accom_ExtraTime = 'Yes'
+						AND Accommodation.Accom_TexttoSpeech = 'No'
+						AND Accommodation.Accom_TestBloodSugar = 'No'
+					),
+	 smallgroup AS (
+					SELECT 
+						Accommodation.student_number,
+						Accommodation.lastfirst,
+						Accommodation.test_region,
+						Accommodation.Accom_SmallGroup
+					FROM Accommodation
+					WHERE Accommodation.Accom_SmallGroup = 'Yes'
+						AND Accommodation.Accom_TexttoSpeech = 'No'
+						AND Accommodation.Accom_TestBloodSugar = 'No'
+					),
+     texttospeech AS (
+					SELECT 
+						Accommodation.student_number,
+						Accommodation.lastfirst,
+						Accommodation.test_region,
+						Accommodation.Accom_TexttoSpeech
+					FROM Accommodation
+					WHERE Accommodation.Accom_TexttoSpeech = 'Yes'
+					),
+     testbloodsugar AS (
+					SELECT 
+						Accommodation.student_number,
+						Accommodation.lastfirst,
+						Accommodation.test_region,
+						Accommodation.Accom_TestBloodSugar
+					FROM Accommodation
+					WHERE Accommodation.Accom_TestBloodSugar = 'Yes'
+					),
+     calculator AS (
+					SELECT 
+						Accommodation.student_number,
+						Accommodation.lastfirst,
+						Accommodation.test_region,
+						Accommodation.Four_Func_Calculator
+					FROM Accommodation
+					WHERE Accommodation.Four_Func_Calculator = 'Yes'
+					)			
+SELECT
+	Accommodation.test_region,
+	CASE
+		WHEN Accommodation.Grade_level IN (11,12) THEN '11-12'
+		WHEN Accommodation.Grade_Level IN (3,4,5,6,7) THEN '3-7'
+		ELSE Accommodation.Grade_Level 
+		END AS GradeLevel,
+	COUNT(Accommodation.lastfirst) AS TotalStudents,
+	(COUNT(Accommodation.lastfirst)-COUNT(extratime.Accom_ExtraTime)-COUNT(texttospeech.Accom_TexttoSpeech)-COUNT(testbloodsugar.Accom_TestBloodSugar)-(COUNT(CASE WHEN smallgroup.Accom_SmallGroup < 15 THEN 1 END))) AS StandardStudents,
+	COUNT(extratime.Accom_ExtraTime) AS ExtraTime,
+	CASE
+		WHEN COUNT(Accommodation.lastfirst) > 15 THEN COUNT(smallgroup.Accom_SmallGroup)
+		ELSE 0
+		END AS SmallGroup,
+	COUNT(texttospeech.Accom_TexttoSpeech) AS TexToSpeech,
+	COUNT(testbloodsugar.Accom_TestBloodSugar) AS TestBloodSugar,
+	COUNT(calculator.Four_Func_Calculator) AS FourFuncCalc
+FROM Accommodation 
+LEFT OUTER JOIN extratime
+	ON extratime.student_number = Accommodation.student_number
+LEFT OUTER JOIN smallgroup
+	ON smallgroup.student_number = Accommodation.student_number
+LEFT OUTER JOIN texttospeech
+	ON texttospeech.student_number = Accommodation.student_number
+LEFT OUTER JOIN testbloodsugar
+	ON testbloodsugar.student_number = Accommodation.student_number
+LEFT OUTER JOIN calculator
+	ON calculator.student_number = Accommodation.student_number
+GROUP BY Accommodation.test_region, GradeLevel
