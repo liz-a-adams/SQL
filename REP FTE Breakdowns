@@ -1,0 +1,30 @@
+--Using tables built into the PowerSchool relational database, the following query pulls each teacher's course list with a breakdown on the number of students in each of the following grade bands.--
+
+SELECT 
+    courses.course_number,
+    courses.course_name,
+    teachers.lastfirst,
+    COUNT(DISTINCT CASE WHEN students.grade_level >= 0 AND students.grade_level <= 5 THEN students.dcid END) AS "K-5",
+    COUNT(DISTINCT CASE WHEN students.grade_level >= 6 AND students.grade_level <= 8 THEN students.dcid END) AS "6-8",
+    COUNT(DISTINCT CASE WHEN students.grade_level >= 9 AND students.grade_level <= 12 THEN students.dcid END) AS "9-12",
+    COUNT(DISTINCT students.dcid) AS "Total"
+FROM 
+    sectionteacher
+JOIN teachers
+    ON teachers.id = sectionteacher.teacherid
+JOIN sections
+    ON sections.id = sectionteacher.sectionid
+JOIN courses
+    ON courses.course_number = sections.course_number
+JOIN cc
+    ON cc.sectionid = sections.id
+JOIN students
+    ON students.id = cc.studentid
+WHERE 
+    start_date > TO_DATE('28-AUG-22 12:00:00', 'DD-MON-YY HH24:MI:SS')
+GROUP BY
+    courses.course_number,
+    courses.course_name,
+    teachers.lastfirst
+ORDER BY
+    teachers.lastfirst
