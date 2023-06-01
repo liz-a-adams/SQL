@@ -1,0 +1,20 @@
+--This SQL works with the PowerSchool relational database to pull the section teachers and co-teachers for classes housed in the Edmentum learning management system.--
+
+SELECT 
+    courses.course_number,
+    courses.course_name,
+    teachers.lastfirst
+FROM 
+    sectionteacher
+JOIN teachers
+    ON teachers.id = sectionteacher.teacherid
+JOIN sections
+    ON sections.id = sectionteacher.sectionid
+JOIN courses
+    ON courses.course_number = sections.course_number    
+WHERE 
+    start_date > TO_DATE('28-AUG-22 12:00:00', 'DD-MON-YY HH24:MI:SS')
+    AND
+    sections.section_number = 'EDM'
+ORDER BY
+    courses.course_name
