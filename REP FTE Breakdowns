@@ -1,4 +1,4 @@
---Using tables built into the PowerSchool relational database, the following query pulls each teacher's course list with a breakdown on the number of students in each of the following grade bands.--
+--Using tables from the PowerSchool relational database, this query pulls each teacher's course list with the number of students in each of these grade bands: K-5, 6-8, 9-12.--
 
 SELECT 
     courses.course_number,
