@@ -1,5 +1,5 @@
 --A table was created via CSV import showing students with their accommodations and test regions for state assessments. 
---The following SQL was created in order to figure out the numbeer of testing rooms and students testing in each region based on student accommodations.
+--The following SQL was created in order to figure out the number of testing rooms and students testing in each region based on student accommodations.
 
 WITH extratime AS (
 					SELECT 
