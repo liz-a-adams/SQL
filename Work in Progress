@@ -1,0 +1,31 @@
+SELECT 
+    students.lastfirst,
+    cc.course_number,
+    courses.course_name,
+    sections.section_number,
+    teachers.lastfirst
+FROM 
+    students
+JOIN cc
+    ON cc.studentid = students.id
+JOIN courses
+    ON courses.course_number = cc.course_number
+JOIN sections
+    ON sections.id = cc.sectionid    
+JOIN teachers
+    ON teachers.id = sections.teacher
+WHERE
+    students.enroll_status = 0
+    AND
+    cc.termid = 3200
+    AND
+    sections.external_expression = 'C(A)'
+    AND 
+    courses.course_number <> 3000
+ORDER BY
+    students.lastfirst
+
+    
+
+
+
